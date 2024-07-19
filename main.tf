@@ -16,7 +16,7 @@ resource "aws_instance" "mi_servidor_1" {
     vpc_security_group_ids = [  aws_security_group.mi_sg.id]
     user_data = <<-EOF
         #!/bin/bash
-        echo "Hola amigo desde server 1!" > index.html
+        echo "Hola amigo desde servidor 1!" > index.html
         nohup busybox httpd -f -p ${var.puerto_servidor} &
         EOF
     tags = {

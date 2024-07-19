@@ -1,5 +1,5 @@
 variable "puerto_servidor" {
-  description = "puerto de las instancias"
+  description = "puerto de las instancias EC2"
   type = any
   default = 8080
 }

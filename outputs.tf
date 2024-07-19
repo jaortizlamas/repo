@@ -1,6 +1,6 @@
 output "dns_publica_1" {
     description = "DNS publico del server"
-    value = "http://${aws_instance.mi_servidor_1.public_dns}:8080"
+    value = "http://${aws_instance.mi_servidor_1.public_dns}:${var.puerto_servidor}"
 }
 output "IPv4_privada_1" {
     description = "IPv4 privada"
@@ -13,7 +13,7 @@ output "IPv4_publica_1" {
 }
 output "dns_publica_2" {
     description = "DNS publico del server"
-    value = "http://${aws_instance.mi_servidor_2.public_dns}:8080"
+    value = "http://${aws_instance.mi_servidor_2.public_dns}:${var.puerto_servidor}"
 }
 output "IPv4_privada_2" {
     description = "IPv4 privada"
@@ -27,5 +27,5 @@ output "IPv4_publica_2" {
 
 output "DNS_load_balancer" {
     description = "DNS LB publica"
-    value = "http://${aws_lb.alb.dns_name}"
+    value = "http://${aws_lb.alb.dns_name}:${var.puerto_lb}"
 }

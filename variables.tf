@@ -1,6 +1,6 @@
 variable "puerto_servidor" {
   description = "puerto de las instancias EC2"
-  type = any
+  type = number
   default = 8080
 
   validation {
@@ -10,12 +10,12 @@ variable "puerto_servidor" {
 }
 variable "puerto_lb" {
   description = "puerto del lb"
-  type = any
+  type = number
   default = 80
 }
 variable "tipo_instancia" {
   description = "tipo de instancia en AWS"
-  type = any
+  type = string
   default = "t2.micro"
 }
 

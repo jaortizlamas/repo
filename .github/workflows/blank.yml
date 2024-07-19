@@ -17,7 +17,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   tf_code_check:
-    name: Terraform validation and Builds
+    name: Terraform validation and Build
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 

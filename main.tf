@@ -11,13 +11,13 @@ data "aws_subnet" "az_b" {
 }
 resource "aws_instance" "mi_servidor_1" {
     ami = "ami-0aef57767f5404a3c"
-    instance_type = "t2.micro"
+    instance_type = var.tipo_instancia
     subnet_id = data.aws_subnet.az_a.id
     vpc_security_group_ids = [  aws_security_group.mi_sg.id]
     user_data = <<-EOF
         #!/bin/bash
         echo "Hola amigo desde server 1!" > index.html
-        nohup busybox httpd -f -p 8080 &
+        nohup busybox httpd -f -p ${var.puerto_servidor} &
         EOF
     tags = {
         Name = "mi_server_1"
@@ -26,13 +26,13 @@ resource "aws_instance" "mi_servidor_1" {
 
 resource "aws_instance" "mi_servidor_2" {
     ami = "ami-0aef57767f5404a3c"
-    instance_type = "t2.micro"
+    instance_type = var.tipo_instancia
     subnet_id = data.aws_subnet.az_b.id
     vpc_security_group_ids = [  aws_security_group.mi_sg.id]
     user_data = <<-EOF
         #!/bin/bash
         echo "Hola desde server 2!" > index.html
-        nohup busybox httpd -f -p 8080 &
+        nohup busybox httpd -f -p ${var.puerto_servidor} &
         EOF
     tags = {
         Name = "mi_server_2"
@@ -45,8 +45,8 @@ resource "aws_security_group" "mi_sg" {
         security_groups = [aws_security_group.alb.id]
         #cidr_blocks = ["0.0.0.0/0"]
         description = "Acceso alpuerto 8080"
-        from_port = 8080
-        to_port = 8080
+        from_port = var.puerto_servidor
+        to_port = var.puerto_servidor
         protocol = "TCP"
     }
 }
@@ -64,15 +64,15 @@ resource "aws_security_group" "alb" {
     ingress {
         cidr_blocks = ["0.0.0.0/0"]
         description = "Acceso alpuerto 80"
-        from_port = 80
-        to_port = 80
+        from_port = var.puerto_lb
+        to_port = var.puerto_lb
         protocol = "TCP"
     }
     egress {
         cidr_blocks = ["0.0.0.0/0"]
         description = "Acceso alpuerto 8080 de las instancias"
-        from_port = 8080
-        to_port = 8080
+        from_port = var.puerto_servidor
+        to_port = var.puerto_servidor
         protocol = "TCP"
     }
 }
@@ -83,7 +83,7 @@ data "aws_vpc" "default" {
 
 resource "aws_lb_target_group" "this" {
     name = "terraforms-alb-target-group"
-    port = 80
+    port = var.puerto_lb
     vpc_id = data.aws_vpc.default.id
     protocol = "HTTP"
 
@@ -91,7 +91,7 @@ resource "aws_lb_target_group" "this" {
         enabled = true
         matcher = "200"
         path = "/"
-        port = "8080"
+        port = var.puerto_servidor
         protocol = "HTTP"
     }
 }
@@ -99,18 +99,18 @@ resource "aws_lb_target_group" "this" {
 resource "aws_lb_target_group_attachment"  "mi_servidor_1"{
     target_group_arn = aws_lb_target_group.this.arn
     target_id = aws_instance.mi_servidor_1.id
-    port = 8080
+    port = var.puerto_servidor
 }
 
 resource "aws_lb_target_group_attachment"  "mi_servidor_2"{
     target_group_arn = aws_lb_target_group.this.arn
     target_id = aws_instance.mi_servidor_2.id
-    port = 8080
+    port = var.puerto_servidor
 }
 
 resource "aws_lb_listener" "this" {
     load_balancer_arn = aws_lb.alb.arn
-    port = 80
+    port = var.puerto_lb
     protocol = "HTTP"
     default_action {
         target_group_arn = aws_lb_target_group.this.arn

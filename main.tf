@@ -10,7 +10,7 @@ data "aws_subnet" "az_b" {
     availability_zone = "eu-west-1b"
 }
 resource "aws_instance" "mi_servidor_1" {
-    ami = "ami-0aef57767f5404a3c"
+    ami = var.ubuntu_ami["eu-west-1"]
     instance_type = var.tipo_instancia
     subnet_id = data.aws_subnet.az_a.id
     vpc_security_group_ids = [  aws_security_group.mi_sg.id]
@@ -25,7 +25,7 @@ resource "aws_instance" "mi_servidor_1" {
 }
 
 resource "aws_instance" "mi_servidor_2" {
-    ami = "ami-0aef57767f5404a3c"
+    ami = var.ubuntu_ami["eu-west-1"]
     instance_type = var.tipo_instancia
     subnet_id = data.aws_subnet.az_b.id
     vpc_security_group_ids = [  aws_security_group.mi_sg.id]

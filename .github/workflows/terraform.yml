@@ -7,8 +7,8 @@ on:
         description: Terraform execute [true or false]
         required: true
 env:
-  tf_backend_container_name: terraformjaortiz/
-  tf_backend_tfstate_name: terraform.tfstate
+  tf_backend_container_name: terraformjaortiz
+  tf_backend_tfstate_name: terraformjaortiz/terraform.tfstate
   tf_backend_region: eu-west-1
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_ID }}

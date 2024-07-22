@@ -12,6 +12,7 @@ terraform {
   }
 }
 
+
 data "aws_subnet" "az_a" {
     availability_zone = "eu-west-1a"
 }

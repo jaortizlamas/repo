@@ -1,5 +1,7 @@
-provider "aws" {
-    region = "eu-west-1"
+terraform {
+    provider "aws" {
+        region = "eu-west-1"
+    }
 }
 
 data "aws_subnet" "az_a" {

@@ -32,7 +32,7 @@ jobs:
       - name: Setup git credentials
         run: git config --global url."https://foo:${PAT}github.com/jaortizlamas/repo".insteadOf "https://github.com/jaortizlamas/repo"
       - name: Plan
-        working-directory: ./AWS/
+        working-directory: ./
         run: |
           terraform init -no-color -backend-config=bucket=${{ env.tf_backend_container_name }} -backend-config=key=${{ env.tf_backend_tfstate_name }} -backend-config=region=${{ env.tf_backend_region }}
           terraform plan -out="terraform.tfplan"

@@ -33,11 +33,12 @@ jobs:
         run: git config --global url."https://foo:${PAT}github.com/jaortizlamas/repo".insteadOf "https://github.com/jaortizlamas/repo"
       - name: Plan
         working-directory: ./
-        run: terraform init -no-color \
-          -backend-config=bucket=${{ env.tf_backend_container_name }} \
-          -backend-config=key=${{ env.tf_backend_tfstate_name }} \
-          -backend-config=region=${{ env.tf_backend_region }} 
-        terraform plan -out="terraform.tfplan"
+        run: |
+          terraform init -no-color \
+              -backend-config=bucket=${{ env.tf_backend_container_name }} \
+              -backend-config=key=${{ env.tf_backend_tfstate_name }} \
+              -backend-config=region=${{ env.tf_backend_region }} 
+          terraform plan -out="terraform.tfplan"
       - name: Apply
         if: github.event.inputs.execute == 'true'
         working-directory: ./

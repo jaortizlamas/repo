@@ -31,7 +31,7 @@ jobs:
       - name: Plan
         working-directory: ./AWS/
         run: |
-          terraform init -no-color \
+          terraform init
           terraform plan -out="terraform.tfplan"
       - name: Apply
         if: github.event.inputs.execute == 'true'

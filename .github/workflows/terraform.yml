@@ -31,10 +31,7 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
       - name: Setup git credentials
         run: git config --global url."https://foo:${PAT}github.com/jaortizlamas/repo".insteadOf "https://github.com/jaortizlamas/repo"
-      - name: Plan
-        working-directory: ./
-        run: |
-        terraform init -no-color
+
       - name: Apply
         if: github.event.inputs.execute == 'true'
         working-directory: ./

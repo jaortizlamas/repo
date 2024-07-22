@@ -3,8 +3,8 @@
     }
 terraform {
     backend "s3" {
-        #bucket = "terraformjaortiz"
-        #key    = "terraformjaortiz/terraform.tfstate"
+        bucket = "terraformjaortiz"
+        key    = "terraformjaortiz/terraform.tfstate"
         region = "eu-west-1"
         encrypt = true
   }

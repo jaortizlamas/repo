@@ -39,11 +39,11 @@ jobs:
       - name: Apply
         if: github.event.inputs.execute == 'true'
         working-directory: ./
-        run: terraform apply -auto-approve -paralleslism=1
+        run: terraform apply -auto-approve -parallelism=1
       - name: Destroy
         if: github.event.inputs.execute == 'destroy'
         working-directory: ./
-        run: terraform destroy -auto-approve -paralleslism=1
+        run: terraform destroy -auto-approve -parallelism=1
       - name: Clean Github Credentials
         if: ${{ always() }}
         run: git config --global --unset-all url."https://foo:${PAT}github.com/jaortizlamas/repo".insteadOf "https://github.com/jaortizlamas/repo"

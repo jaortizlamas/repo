@@ -1,0 +1,57 @@
+name: Terraform
+
+on:
+  workflow_dispatch:
+    inputs:
+      execute:
+        description: Terraform execute [true or false]
+        required: true
+env:
+  tf_backend_container_name: terraformjaortiz/
+  tf_backend_tfstate_name: terraform.tfstate
+  tf_backend_region: eu-west-1
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_ID }}
+  #AWS_DEFAULT_REGION:
+  PAT: ${{ secrets.TF_API_TOKEN }}
+  HOME: ${{ github.workspace }}
+
+
+
+jobs:
+  create:
+    environment: AWS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 0.14.x
+          terraform_wrapper: true
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      - name: Setup git credentials
+        run: git config --global url."https://foo:${PAT}github.com/jaortizlamas/repo".insteadOf "https://github.com/jaortizlamas/repo"
+      - name: Plan
+        working-directory: ./
+        run: |
+          terraform init -no-color \
+          -backend-config=bucket=${{ env.tf_backend_container_name }} \
+          -backend-config=key=${{ env.tf_backend_tfstate_name }} \
+          -backend-config=region=${{ env.tf_backend_region }}
+          terraform plan -out="terraform.tfplan"
+      - name: Apply
+        if: github.event.inputs.execute == 'true'
+        working-directory: ./
+        run: terraform apply -auto-approve -parallelism=1
+      - name: Destroy
+        if: github.event.inputs.execute == 'destroy'
+        working-directory: ./
+        run: terraform destroy -auto-approve -parallelism=1
+      - name: Clean Github Credentials
+        if: ${{ always() }}
+        run: git config --global --unset-all url."https://foo:${PAT}github.com/jaortizlamas/repo".insteadOf "https://github.com/jaortizlamas/repo"
+        
+        
+
+
+

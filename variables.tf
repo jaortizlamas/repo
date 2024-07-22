@@ -3,10 +3,6 @@ variable "puerto_servidor" {
   type = number
   default = 8080
 
-  validation {
-    condition =  var.puerto_servidor > 0 && var.puerto_servidor <= 65536
-    error_message = "Puerto no valido"
-  }
 }
 variable "puerto_lb" {
   description = "puerto del lb"

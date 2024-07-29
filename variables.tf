@@ -25,3 +25,17 @@ variable "ubuntu_ami" {
 
   }
 }
+
+variable "servidores" {
+  description = "mapa de servidores con nombres y AZs"
+  type = map(object({
+    nombre = string,
+    az = string
+
+  }))
+  default = {
+    "ser-1" = { nombre = "servidor-1", az = "a" }
+    "ser-2" = { nombre = "servidor-2", az = "b" }
+    "ser-3" = { nombre = "servidor-3", az = "c" }
+  }
+}

@@ -1,6 +1,13 @@
     provider "aws" {
-        region = "eu-west-1"
+        region = local.region
     }
+
+locals {
+    region = "eu-west-1"
+    ami = var.ubuntu_ami[local.region]
+}
+
+
 terraform {
     backend "s3" {
         bucket = "terraformjaortiz"
@@ -9,23 +16,24 @@ terraform {
         encrypt = true
   }
 }
-data "aws_subnet" "az_a" {
-    availability_zone = "eu-west-1a"
-}
-
-data "aws_subnet" "az_b" {
-    availability_zone = "eu-west-1b"
+data "aws_subnet" "public_subnet" {
+    for_each = var.servidores
+    availability_zone = "${local.region}${each.value.az}"
 }
 
 #recursos
-resource "aws_instance" "mi_servidor_1" {
-    ami = var.ubuntu_ami["eu-west-1"]
+
+
+resource "aws_instance" "servidor" {
+    for_each = var.servidores
+
+    ami = local.ami
     instance_type = var.tipo_instancia
-    subnet_id = data.aws_subnet.az_a.id
+    subnet_id = data.aws_subnet.public_subnet[each.key].id //each.key es ser-1 o ser-2
     vpc_security_group_ids = [  aws_security_group.mi_sg.id]
     user_data = <<-EOF
         #!/bin/bash
-        echo "Hola amigo desde servidor 1!" > index.html
+        echo "Hola amigo desde ${each.value.nombre}!" > index.html
         nohup busybox httpd -f -p ${var.puerto_servidor} &
         EOF
     tags = {
@@ -33,20 +41,6 @@ resource "aws_instance" "mi_servidor_1" {
     }
 }
 
-resource "aws_instance" "mi_servidor_2" {
-    ami = var.ubuntu_ami["eu-west-1"]
-    instance_type = var.tipo_instancia
-    subnet_id = data.aws_subnet.az_b.id
-    vpc_security_group_ids = [  aws_security_group.mi_sg.id]
-    user_data = <<-EOF
-        #!/bin/bash
-        echo "Hola desde server 2!" > index.html
-        nohup busybox httpd -f -p ${var.puerto_servidor} &
-        EOF
-    tags = {
-        Name = "mi_server_2"
-    }
-}
 resource "aws_security_group" "mi_sg" {
     name = "mi_servidor_sg"
 
@@ -64,7 +58,8 @@ resource "aws_lb" "alb" {
     load_balancer_type = "application"
     name = "terraform-alb"
     security_groups = [aws_security_group.alb.id]
-    subnets = [data.aws_subnet.az_a.id, data.aws_subnet.az_b.id]
+    #subnets = [data.aws_subnet.az_a.id, data.aws_subnet.az_b.id]
+    subnets = [ for subnet in data.aws_subnet.public_subnet : subnet.id ]
 }
 
 resource "aws_security_group" "alb" {
@@ -105,15 +100,12 @@ resource "aws_lb_target_group" "this" {
     }
 }
 
-resource "aws_lb_target_group_attachment"  "mi_servidor_1"{
-    target_group_arn = aws_lb_target_group.this.arn
-    target_id = aws_instance.mi_servidor_1.id
-    port = var.puerto_servidor
-}
 
-resource "aws_lb_target_group_attachment"  "mi_servidor_2"{
+resource "aws_lb_target_group_attachment"  "servidor"{
+    for_each = var.servidores
+
     target_group_arn = aws_lb_target_group.this.arn
-    target_id = aws_instance.mi_servidor_2.id
+    target_id = aws_instance.servidor[each.key].id
     port = var.puerto_servidor
 }
 

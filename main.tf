@@ -16,6 +16,8 @@ data "aws_subnet" "az_a" {
 data "aws_subnet" "az_b" {
     availability_zone = "eu-west-1b"
 }
+
+#recursos
 resource "aws_instance" "mi_servidor_1" {
     ami = var.ubuntu_ami["eu-west-1"]
     instance_type = var.tipo_instancia

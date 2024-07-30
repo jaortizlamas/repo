@@ -36,7 +36,7 @@ module "servidores_ec2" {
 module "loadbalancer" {
   source = "./modulos/loadbalancer"
   subnet_ids = [for subnet in data.aws_subnet.public_subnet : subnet.id]
-  instancia_ids = module.servidores_ec2.instancia_ids
+  instancias_ids = module.servidores_ec2.instancias_ids
   puerto_lb = 80
   puerto_servidor = 8080
 }

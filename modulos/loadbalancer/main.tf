@@ -46,10 +46,11 @@ resource "aws_lb_target_group" "this" {
 
 
 resource "aws_lb_target_group_attachment"  "servidor"{
-    for_each = var.instancias_ids
+    #for_each = var.instancias_ids
+    count = length(var.instancias_ids)
 
     target_group_arn = aws_lb_target_group.this.arn
-    target_id = each.value
+    target_id = element(var.instancias_ids, count.index)
     port = var.puerto_servidor
 }
 

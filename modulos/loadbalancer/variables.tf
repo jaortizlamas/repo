@@ -6,7 +6,7 @@ variable "subnet_ids" {
 
 variable "instancias_ids" {
   description = "Todos los ids de las instancias EC2"
-  type = set(string)
+  type = list(string)
 }
 
 variable "puerto_servidor" {

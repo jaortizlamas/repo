@@ -29,7 +29,7 @@ module "servidores_ec2" {
   ami_id = local.ami
   servidores = {
     for id_ser, datos in var.servidores :
-    id_ser => {nombre = datos.nombre, subnet_id = data.aws_subnet.public_subnet[id_ser]}
+    id_ser => { nombre = datos.nombre, subnet_id = data.aws_subnet.public_subnet[id_ser].id}
       }
 }
 

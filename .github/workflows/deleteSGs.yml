@@ -12,7 +12,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install awscli
-        run: |
+        - run: |
 	  #Security groups no enlazado a interfaces
 	  (comm -23  <(aws ec2 describe-security-groups --query 'SecurityGroups[*].GroupId'  --output text | tr '\t' '\n'| sort) <(aws ec2 describe-network-interfaces --output text --query NetworkInterfaces[].Groups[].GroupId | tr -d '\r' | tr "\t" "\n" | sort | uniq)) > No_used_security_groups.txt
 	  #Security gruops no enlazados a interfaces quitando el de por defecto

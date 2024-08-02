@@ -16,12 +16,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install awscli
       - run: |
-          #Security groups no enlazado a interfaces
-	  (comm -23  <(aws ec2 describe-security-groups --query 'SecurityGroups[*].GroupId'  --output text | tr '\t' '\n'| sort) <(aws ec2 describe-network-interfaces --output text --query NetworkInterfaces[].Groups[].GroupId | tr -d '\r' | tr "\t" "\n" | sort | uniq)) > No_used_security_groups.txt
-   	  #Security gruops no enlazados a interfaces quitando el de por defecto
-	  (comm -23  No_used_security_groups.txt <(aws ec2 describe-security-groups --filter  Name=group-name,Values=default --query 'SecurityGroups[*].[GroupId]' --output text | tr '\t' '\n'| sort)) > No_used_security_groups_without_default.txt
-	  #Bucle borrado security-groups no usados
-	  for id in cat No_used_security_groups_without_default.txt ; do echo $id ; aws ec2 delete-security-group --group-id $id; done
-	  #Borrado de archivos
-	  rm No_used_security_groups.txt
-	  rm No_used_security_groups_without_default.txt
+          (comm -23  <(aws ec2 describe-security-groups --query 'SecurityGroups[*].GroupId'  --output text | tr '\t' '\n'| sort) <(aws ec2 describe-network-interfaces --output text --query NetworkInterfaces[].Groups[].GroupId | tr -d '\r' | tr "\t" "\n" | sort | uniq)) > No_used_security_groups.txt

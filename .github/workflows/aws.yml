@@ -24,3 +24,4 @@ jobs:
           (comm -23  No_used_security_groups.txt <(aws ec2 describe-security-groups --filter  Name=group-name,Values=default --query 'SecurityGroups[*].[GroupId]' --output text | tr '\t' '\n'| sort)) > No_used_security_groups_without_default.txt
           cat No_used_security_groups.txt
           cat No_used_security_groups_without_default.txt
+          for id in cat No_used_security_groups_without_default.txt ; do echo $id ; aws ec2 delete-security-group --group-id $id; done

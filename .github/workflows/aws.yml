@@ -2,6 +2,10 @@ name: aws delete SG not used
 
 on:
   workflow_dispatch:
+    inputs:
+      execute:
+        description: Security Group remove execute [true or false]
+        required: true
 
 jobs:
   aws-cli-in-github-actions:

@@ -6,6 +6,9 @@ on:
       execute:
         description: Security Group remove execute [true or false]
         required: true
+      region:
+        description: AWS region [1 ${{ vars.REGION_ID_1 }} or  2 ${{ vars.REGION_ID_2 }} or 3 (both)]
+        required: true
 
 jobs:
   aws-cli-in-github-actions-production:

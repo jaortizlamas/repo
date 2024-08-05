@@ -14,7 +14,7 @@ jobs:
           python-version: '3.10'
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ID }}
-          aws-region: eu-west-1a
+          aws-region: eu-west-1
       - name: Install dependencies
         run: |
           

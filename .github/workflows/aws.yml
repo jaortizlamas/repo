@@ -37,7 +37,7 @@ jobs:
           rm No_used_security_groups.txt
           rm No_used_security_groups_without_default.txt
           
-  aws-cli-in-github-actions-production:
+  aws-cli-in-github-actions-production2:
     environment: production
     runs-on: ubuntu-latest
     steps:

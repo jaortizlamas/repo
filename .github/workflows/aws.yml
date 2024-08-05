@@ -8,7 +8,7 @@ on:
         required: true
 
 jobs:
-  aws-cli-in-github-actions-production:
+  region1-aws-cli-in-github-actions-production:
     environment: production
     runs-on: ubuntu-latest
     steps:
@@ -37,7 +37,7 @@ jobs:
           rm No_used_security_groups_${{ vars.REGION_ID_1 }}.txt
           rm No_used_security_groups_without_default_${{ vars.REGION_ID_1 }}.txt
           
-  aws-cli-in-github-actions-production2:
+  region2-aws-cli-in-github-actions-production2:
     environment: production
     runs-on: ubuntu-latest
     steps:

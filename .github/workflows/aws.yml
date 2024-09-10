@@ -32,6 +32,7 @@ jobs:
       - name: Remove Security Groups not used
         if: github.event.inputs.execute == 'true'
         run: for id in `cat No_used_security_groups_without_default_${{ vars.REGION_ID_1 }}.txt` ; do echo $id ; aws ec2 delete-security-group --group-id $id; done
+        continue-on-error: true
       - name: Remove txt files
         run: |
           rm No_used_security_groups_${{ vars.REGION_ID_1 }}.txt

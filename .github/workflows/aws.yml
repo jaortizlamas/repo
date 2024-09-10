@@ -35,7 +35,7 @@ jobs:
         run: for id in `cat No_used_security_groups_without_default_${{ vars.REGION_ID_1 }}.txt` ; do echo $id ; aws ec2 delete-security-group --group-id $id; done
       - name: borrado del fallo
         if: ${{failure() }}
-        run echo $id
+        run: echo $id
       - name: Remove txt files
         run: |
           rm No_used_security_groups_${{ vars.REGION_ID_1 }}.txt

@@ -35,7 +35,7 @@ jobs:
           aws ec2 create-managed-prefix-list \
           --address-family IPv4 \
           --max-entries 10 \
-          --entries Cidr=10.10.10.10./32,Description=test \
+          --entries Cidr=10.10.10.10/32,Description=test \
           --prefix-list-name ${{github.event.inputs.name}}
 
                     

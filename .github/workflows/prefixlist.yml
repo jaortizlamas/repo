@@ -36,5 +36,6 @@ jobs:
           --address-family IPv4 \
           --max-entries 10 \
           --entries Cidr=10.10.10.10./32,Description= ${{github.event.inputs.description}} \
-          --prefix-list-name ${{github.event.inputs.name}}
+          --prefix-list-name prueba
+
                     

@@ -10,7 +10,7 @@ on:
         description: descripcion de la lista [description]
         required: true
       cidr:
-        description: CIDR [CIDR]
+        description: CIDR [network 0.0.0.0/0]
         required: true
 
 jobs:

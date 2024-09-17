@@ -9,7 +9,7 @@ on:
       description:
         description: descripcion de la lista [description]
         required: true
-      Cidr:
+      cidr:
         description: CIDR [CIDR]
         required: true
 
@@ -35,6 +35,6 @@ jobs:
           aws ec2 create-managed-prefix-list \
           --address-family IPv4 \
           --max-entries 10 \
-          --entries Cidr=10.0.0.0/16,Description=test \
-          --prefix-list-name test
+          --entries Cidr= ${{github.event.inputs.cidr}},Description=${{github.event.inputs.description}} \
+          --prefix-list-name ${{github.event.inputs.name}}
                     

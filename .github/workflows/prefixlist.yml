@@ -3,8 +3,14 @@ name: create prefixlist
 on:
   workflow_dispatch:
     inputs:
-      execute:
-        description: Create prefix list [true or false]
+      name:
+        description: nombre de lista a crear [name]
+        required: true
+      description:
+        description: descripcion de la lista [description]
+        required: true
+      Cidr:
+        description: CIDR [CIDR]
         required: true
 
 jobs:

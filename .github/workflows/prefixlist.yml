@@ -1,4 +1,4 @@
-name: aws delete SG not used
+name: create prefixlist
 
 on:
   workflow_dispatch:

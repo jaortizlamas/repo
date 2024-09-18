@@ -1,10 +1,10 @@
-name: create prefixlist
+name: modify prefixlist
 
 on:
   workflow_dispatch:
     inputs:
-      name:
-        description: nombre de lista a crear [name]
+      id:
+        description: id de lista a modificar [id]
         required: true
       description:
         description: descripcion de la lista [description]
@@ -31,11 +31,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install awscli
       - name: Create Prefix-list
-        run: |
-          aws ec2 create-managed-prefix-list \
-          --address-family IPv4 \
-          --max-entries 10 \
-          --entries Cidr=${{github.event.inputs.cidr}},Description="${{github.event.inputs.description}}" --prefix-list-name ${{github.event.inputs.name}}
+        run: 
+          aws ec2 modify-managed-prefix-list \
+          --prefix-list-id ${{github.event.inputs.id} --add-entries Cidr=${{github.event.inputs.cidr}},Description="${{github.event.inputs.description}}"
+
 
 
                     

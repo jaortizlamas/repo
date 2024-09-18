@@ -33,6 +33,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install awscli
-      - name: Create Prefix-list
+      - name: Modify Prefix-list
         run: 
-          aws ec2 modify-managed-prefix-list --prefix-list-id pl-07aec147647ca494e --add-entries Cidr=${{github.event.inputs.cidr}},Description="${{github.event.inputs.description}}" --debug --current-version ${{github.event.inputs.version}}              
+          aws ec2 modify-managed-prefix-list --prefix-list-id ${{github.event.inputs.identificator}} --add-entries Cidr=${{github.event.inputs.cidr}},Description="${{github.event.inputs.description}}" --debug --current-version ${{github.event.inputs.version}}              
